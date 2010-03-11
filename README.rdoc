@@ -1,16 +1,79 @@
 = cert_lib
 
-Description goes here.
+== Synopsis
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+Ruby has an excellent full-featured openssl library, but the documentation 
+for it is sparse. This gem wraps ruby openssl and provides simple methods for 
+creating public/private keys and X509 certificates. Use the public/private key 
+pairs to sign/verify and encrypt/decrypt data. X509 certificates contain the
+public key as well as metadata about the key, and are used as a standard vehicle 
+for distributing public keys.
+
+Information on how to use ruby openssl was acquired from many sources, 
+but I particularly recommend:
+  http://olabini.com/blog/2008/08/ruby-security-quick-guide/
+
+There were also many useful examples in the Puppet code:
+  http://reductivelabs.com/products/puppet/
+
+== Setup
+
+There needs to be a model present named CertLog that provides an increasing
+integer with each entry, for the cert serial number. Best would be to create one 
+in an ORM such as DataMapper or ActiveRecord. It should have an Integer "id" 
+field, and at least a String "subject" and a DateTime "expires_after" field.
+
+Alternatively you could use the class provided in CertLib::CertSerial, which
+writes to a file, by defining a constant named CertLogRoot that is a Pathname 
+instance for the location where you would like a "certlog" directory to 
+be created.
+
+For example, to put "certlog" inside the "db" directory in the Rails hierarchy,
+you would put this into config/environment.rb, or somewhere that loads before 
+the gem:
+  CertLogRoot = Pathname.new(File.join(File.dirname(__FILE__), '..', 'db')) 
+  
+== Usage
+
+Create a public/private key pair and a basic self-signed X509 cert like this:
+  cert, key = CertLib::Cert.create(:common_name => "example.com")
+  
+See the comments in CertLib::Cert for a list of other possible keys in the 
+argument hash. Only :common_name is required.
+
+Call #to_s on the above cert and key objects to get their string representations
+in the standard PEM format, suitable for saving away in a file or database field. 
+If you wish to see what's in the cert or key, use #inspect.
+
+You can then resurrect certs and keys with:
+  cert = CertLib::Cert.new(cert_pem_string)
+  key = CertLib::Pkey.new(key_pem_string)
+
+Having instantiated cert and/or key as above:
+
+Use key#sign to get a signature over a string:
+  signature = key.sign(data_to_sign) # => Base64 encoded signature
+  
+Use cert#verify_signature to prove that the signed data was signed by the 
+private key corresponding to the certificate:
+  cert.verify_signature(signature, signed_text) # => true|false
+  
+Use cert#encrypt to return an encrypted string:
+  encrypted_string = cert.encrypt(text_to_encrypt) # => Base64 encoded encrypted string
+  
+Only key#decrypt can make the data plaintext again, assuming key represents the 
+private key corresponding to the cert that did the encrypting:
+  decrypted_string = key.decrypt(encrypted_string) # => plaintext string
+  
+In all 4 of these methods, pass false as an additional last argument to accept
+or return raw bytes instead of Base64 encoded strings.
+  
+== Install
+
+git clone git://github.com/victorgrey/cert_lib.git
+cd cert_lib
+rake build
+(sudo) rake install
 
 == Copyright
 
