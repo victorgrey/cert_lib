@@ -71,8 +71,11 @@ or return raw bytes instead of Base64 encoded strings.
 == Install
 
 git clone git://github.com/victorgrey/cert_lib.git
+
 cd cert_lib
+
 rake build
+
 (sudo) rake install
 
 == Copyright
