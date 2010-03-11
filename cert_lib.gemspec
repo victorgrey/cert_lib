@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Victor Grey"]
-  s.date = %q{2010-03-08}
+  s.date = %q{2010-03-11}
   s.description = %q{A wrapper around openssl to make creating and using X509 certs easier. Includes methods for instantiating certs and keys from their string representations, and using them for signing and verifying signatures and encrypting/decrypting.}
   s.email = %q{victor@metacnx.com}
   s.extra_rdoc_files = [
