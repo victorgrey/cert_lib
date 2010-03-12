@@ -70,16 +70,13 @@ or return raw bytes instead of Base64 encoded strings.
   
 == Install
 
-Requires the jeweler and rspec gems:
-gem install jeweler rspec
-
 git clone git://github.com/victorgrey/cert_lib.git
 
 cd cert_lib
 
-rake build
+gem build cert_lib.gemspec
 
-(sudo) rake install
+(sudo) gem install cert_lib-0.1.0.gem
 
 == Copyright
 
