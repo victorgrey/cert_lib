@@ -42,5 +42,16 @@ module CertLib
         raise InvalidCertSerial
       end
     end
+    
+    # use a Mongoid model
+    def mongo_number(opts={})
+      certlog = CertLog.new(opts)
+      if certlog.save
+        certlog.id.to_s.to_i(16)
+      else
+        raise InvalidCertSerial
+      end
+    end
+    
   end
 end
