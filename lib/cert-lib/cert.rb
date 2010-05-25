@@ -80,7 +80,7 @@ module CertLib
     #
     # :ca  => Boolean, whether this should be a self-signed Certificate Authority certificate, default false
     #
-    # :ca_cert  => Certificate Authority's certificate, or nil for a self-signed certificate
+    # :ca_cert  => OpenSSL::X509::Certificate, Certificate Authority's certificate, or nil for a self-signed certificate
     #
     # :ca_key  => OpenSSL::PKey::RSA, the Certificate Authority private key with which to sign the cert -
     #     if :ca is true and :ca_key is present, that indicates that we are renewing the ca_cert for this key
@@ -161,7 +161,7 @@ module CertLib
           issuer = cert.subject
         end
         if opts[:ca_key]
-          signing_key = CertLib::Pkey.new(opts[:ca_key]).key
+          signing_key = opts[:ca_key]
         else
           signing_key = cert_key.key
         end
