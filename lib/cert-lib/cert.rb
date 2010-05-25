@@ -102,7 +102,7 @@ module CertLib
       cert.subject = generate_subject(opts)
       cert.not_before = opts[:not_before].instance_of?(Time) ? opts[:not_before] : Time.now - (60*60*24) # one day in the past
       cert.not_after = opts[:not_after].instance_of?(Time) ? opts[:not_after] : Time.now + (365 * 24 * 60 * 60) # one year in the future
-      if opts[:mongo]
+      if opts[:mongo_cert_log]
         cert.serial = CertLib::CertSerial.mongo_number(:subject => cert.subject.to_s, :expires_after => cert.not_after.strftime("%Y-%m-%d %H:%M:%S"))
       else
         cert.serial = CertLib::CertSerial.number(:subject => cert.subject.to_s, :expires_after => cert.not_after.strftime("%Y-%m-%d %H:%M:%S"))
