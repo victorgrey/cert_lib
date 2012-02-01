@@ -1,10 +1,10 @@
 module CertLib
   module CertSerial
     extend self
-    
+    CertLogRoot ||= nil
     class InvalidCertSerial < StandardError; end
     
-    if defined?(CertLogRoot) # should be an instance of Pathname
+    if CertLogRoot && CertLogRoot.instance_of?(Pathname) # should be an instance of Pathname
       # CertLog#id should return a never-repeating integer.
       # The expectation is that in Rails we will use a DataMapper or ActiveRecord class named CertLog,
       # but this is provided as a backstop and to run the gem tests.
@@ -26,11 +26,12 @@ module CertLib
               file.write("#{@id} #{@subject} #{@expires_after}\n")
             end
           else
-            (certlog_dir + 'certlog.txt').open('w') do |file| 
+            (certlog_dir + 'certlog.txt').open('w') do |file|
               file.write("#{@id} #{@subject} #{@expires_after}\n")
             end
           end
         end
+        
       end
     end
     
