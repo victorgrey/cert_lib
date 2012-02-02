@@ -27,7 +27,7 @@ module CertLib
     # Assumes a base64 encoded signature, unless 3rd arg is false
     def verify_signature(signature, signed_text, base64_encoded=true)
       sig = base64_encoded ? Base64.urlsafe_decode64(signature) : signature
-      self.public_key.verify(OpenSSL::Digest::SHA1.new, sig, signed_text)
+      self.public_key.verify(OpenSSL::Digest::SHA256.new, sig, signed_text)
     end
     
     # Encrypt text with this public key, so that only the corresponding private key can decrypt
@@ -121,7 +121,7 @@ module CertLib
       cert.issuer = issuer
       cert.extensions = extensions(cert, issuer_cert, opts)
 
-      cert.sign(signing_key, OpenSSL::Digest::SHA1.new)
+      cert.sign(signing_key, OpenSSL::Digest::SHA256.new)
       
       output = [new(cert)]
       output << cert_key if new_key

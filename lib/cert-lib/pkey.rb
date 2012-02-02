@@ -26,7 +26,7 @@ module CertLib
     # signs text with this key, base64 encoded by default
     def sign(text_to_sign, base64_encode=true)
       return nil if text_to_sign.nil? || text_to_sign.empty?
-      sig = @key.sign(OpenSSL::Digest::SHA1.new, text_to_sign)
+      sig = @key.sign(OpenSSL::Digest::SHA256.new, text_to_sign)
       base64_encode ? Base64.urlsafe_encode64(sig) : sig
     end
     
