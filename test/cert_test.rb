@@ -59,14 +59,14 @@ describe "CertLib::Cert" do
   it "should verify a signature made by a corresponding private key" do
     cert, key = CertLib::Cert.create(:common_name => "foobar")
     text_to_sign = "Twas brillig and the slithy toves"
-    signature = key.sign(text_to_sign)
+    signature = key.sign_and_encode(text_to_sign)
     cert.verify_signature(signature, text_to_sign).must_equal true
   end
   
   it "should fail to verify an incorrect signature" do
     cert, key = CertLib::Cert.create(:common_name => "foobar")
     text_to_sign = "Twas brillig and the slithy toves"
-    signature = key.sign(text_to_sign)
+    signature = key.sign_and_encode(text_to_sign)
     signature[1], signature[2], signature[3] = signature[3], signature[2], signature[1] #swap three characters
     cert.verify_signature(signature, text_to_sign).must_equal false
   end

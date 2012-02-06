@@ -10,6 +10,7 @@ class Pathname
 end
 dir = Pathname(__FILE__).dirname.expand_path / 'cert-lib'
 
+require dir / 'base64_urlsafe'
 require dir / 'cert_serial'
 require dir / 'pkey'
 require dir / 'cert'
