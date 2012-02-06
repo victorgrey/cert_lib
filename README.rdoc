@@ -76,7 +76,7 @@ cd cert_lib
 
 gem build cert_lib.gemspec
 
-(sudo) gem install cert_lib-0.4.0.gem
+(sudo) gem install cert_lib-0.4.1.gem
 
 == Copyright
 
