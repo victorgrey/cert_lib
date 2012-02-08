@@ -1,11 +1,13 @@
 PATH
   remote: .
   specs:
-    cert_lib (0.3.0)
+    cert_lib (0.4.1)
+      yajl-ruby
 
 GEM
   remote: http://rubygems.org/
   specs:
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby

@@ -1,6 +1,7 @@
 require 'openssl'
 require 'base64'
 require 'pathname'
+require 'yajl/json_gem'
 
 class Pathname
   # borrowed from extlib
@@ -14,3 +15,4 @@ require dir / 'base64_urlsafe'
 require dir / 'cert_serial'
 require dir / 'pkey'
 require dir / 'cert'
+require dir / 'jwt'
