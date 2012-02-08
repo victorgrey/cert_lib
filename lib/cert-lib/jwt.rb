@@ -8,9 +8,9 @@ module CertLib
       [header_and_payload, encoded_signature(header_and_payload, privkey)].join('.')
     end
   
-    def read(jwt, pubkey)
+    def read(jwt, x509cert)
       hdr, payload, signature = validate_jwt(jwt)
-      if validate_header(hdr) && verify_signature([hdr, payload].join('.'), signature, pubkey)
+      if validate_header(hdr) && verify_signature([hdr, payload].join('.'), signature, x509cert)
         decode_and_validate_payload(payload)
       else
         raise JWTError, "Cannot validate signature."
@@ -59,8 +59,8 @@ module CertLib
       !!header
     end
     
-    def verify_signature(signed, sig, pubkey)
-      c = CertLib::Cert.new(pubkey)
+    def verify_signature(signed, sig, x509cert)
+      c = CertLib::Cert.new(x509cert)
       c.verify_signature(sig, signed)
     end
     
