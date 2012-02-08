@@ -27,12 +27,12 @@ module CertLib
     def sign_and_encode(text_to_sign, base64_encode=true)
       return nil if text_to_sign.nil? || text_to_sign.empty?
       sig = @key.sign(OpenSSL::Digest::SHA256.new, text_to_sign)
-      base64_encode ? Base64UrlSafe.encode64(sig) : sig
+      base64_encode ? Base64UrlSafe.encode(sig) : sig
     end
     
     # decrypts text with this key, assumes text is base64 encoded, unless 2rd arg is false
     def decrypt(text_to_decrypt, base64_encoded=true)
-      text = base64_encoded ? Base64UrlSafe.decode64(text_to_decrypt) : text_to_decrypt
+      text = base64_encoded ? Base64UrlSafe.decode(text_to_decrypt) : text_to_decrypt
       begin
         @key.private_decrypt(text)
       rescue OpenSSL::PKey::RSAError
