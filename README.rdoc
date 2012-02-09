@@ -81,3 +81,4 @@ gem build cert_lib.gemspec
 == Copyright
 
 Copyright (c) 2010 Victor Grey. See LICENSE for details.
+
