@@ -10,11 +10,9 @@ module CertLib
   
     def read(jwt, x509cert)
       hdr, payload, signature = validate_jwt(jwt)
-      if validate_header(hdr) && verify_signature([hdr, payload].join('.'), signature, x509cert)
-        decode_and_validate_payload(payload)
-      else
-        raise JWTError, "Cannot validate signature."
-      end
+      validate_header(hdr)
+      verify_signature([hdr, payload].join('.'), signature, x509cert)
+      decode_and_validate_payload(payload)
     end
     
     private
@@ -56,12 +54,11 @@ module CertLib
         raise JWTError, e.message
       end
       raise JWTError, "Invalid or unimplemented JWT header: #{header.to_json}" unless header["typ"] == "JWT" && header["alg"] == "RS256"
-      !!header
     end
     
     def verify_signature(signed, sig, x509cert)
       c = CertLib::Cert.new(x509cert)
-      c.verify_signature(sig, signed)
+      raise JWTError, "Cannot verify signature." unless c.verify_signature(sig, signed)
     end
     
     def decode_and_validate_payload(payload)
